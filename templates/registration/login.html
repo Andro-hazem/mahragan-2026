@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Sign In — Church Festival{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-wrap {
+        max-width: 420px;
+        margin: 3rem auto;
+    }
+
+    .auth-card {
+        background: var(--white);
+        border: 1px solid var(--parchment-dk);
+        border-top: 4px solid var(--gold);
+        border-radius: 2px;
+        padding: 2rem 2.5rem;
+    }
+
+    .auth-cross {
+        text-align: center;
+        font-size: 2rem;
+        color: var(--gold);
+        margin-bottom: 1rem;
+    }
+
+    .auth-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--burgundy-dk);
+        text-align: center;
+        margin-bottom: 0.25rem;
+    }
+
+    .auth-subtitle {
+        font-style: italic;
+        color: var(--text-muted);
+        text-align: center;
+        font-size: 0.85rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.1rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-family: 'Cinzel', serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        font-family: 'Lora', serif;
+        font-size: 0.92rem;
+        padding: 9px 13px;
+        border: 1px solid var(--parchment-dk);
+        border-radius: 2px;
+        background: var(--parchment);
+        color: var(--charcoal);
+    }
+
+    .form-group input:focus {
+        outline: 2px solid var(--gold);
+        outline-offset: 1px;
+    }
+
+    .auth-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+        padding: 11px;
+        font-size: 0.8rem;
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.25rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .auth-footer a {
+        color: var(--burgundy);
+        font-family: 'Cinzel', serif;
+        font-size: 0.78rem;
+    }
+
+    .form-errors {
+        background: #fdf0f0;
+        border-left: 3px solid #e53935;
+        padding: 0.75rem 1rem;
+        border-radius: 2px;
+        margin-bottom: 1rem;
+        font-size: 0.85rem;
+        color: #c62828;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-cross">✝</div>
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to vote and leave comments</p>
+
+        {% if form.errors %}
+        <div class="form-errors">
+            Invalid username or password. Please try again.
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" autofocus>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary auth-btn">Sign In</button>
+        </form>
+
+        <p class="auth-footer">
+            No account? <a href="{% url 'register' %}">Register here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

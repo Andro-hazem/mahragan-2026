@@ -1,0 +1,376 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ work.title }} — Church Festival{% endblock %}
+
+{% block extra_css %}
+<style>
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Cinzel', serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        color: var(--burgundy);
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    /* ── WORK LAYOUT ── */
+    .work-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    @media (max-width: 700px) {
+        .work-layout { grid-template-columns: 1fr; }
+    }
+
+    .work-image-wrap {
+        border: 3px solid var(--gold);
+        border-radius: 2px;
+        overflow: hidden;
+        background: var(--parchment-dk);
+    }
+
+    .work-image-wrap img {
+        width: 100%;
+        display: block;
+        max-height: 480px;
+        object-fit: cover;
+    }
+
+    .work-image-placeholder {
+        width: 100%;
+        height: 380px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: var(--gold);
+        opacity: 0.4;
+    }
+
+    /* ── WORK INFO ── */
+    .work-category-tag {
+        font-family: 'Cinzel', serif;
+        font-size: 0.65rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--white);
+        background: var(--burgundy);
+        padding: 4px 12px;
+        border-radius: 2px;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .work-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--burgundy-dk);
+        line-height: 1.2;
+        margin-bottom: 0.4rem;
+    }
+
+    .work-author {
+        font-style: italic;
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .work-description {
+        color: var(--charcoal);
+        line-height: 1.75;
+        font-size: 0.95rem;
+        margin-bottom: 1.75rem;
+    }
+
+    /* ── VOTE BOX ── */
+    .vote-box {
+        background: var(--parchment);
+        border: 1px solid var(--parchment-dk);
+        border-left: 4px solid var(--gold);
+        border-radius: 2px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .vote-count-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .vote-cross-big {
+        color: var(--gold);
+        font-size: 1.8rem;
+    }
+
+    .vote-number {
+        font-family: 'Cinzel', serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--burgundy-dk);
+        line-height: 1;
+    }
+
+    .vote-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .already-voted {
+        font-family: 'Cinzel', serif;
+        font-size: 0.8rem;
+        color: var(--gold);
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .work-meta {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    /* ── COMMENTS ── */
+    .comments-section {
+        margin-top: 3rem;
+    }
+
+    .section-heading {
+        font-family: 'Cinzel', serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--burgundy-dk);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-heading::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--parchment-dk);
+    }
+
+    .comment-card {
+        background: var(--white);
+        border: 1px solid var(--parchment-dk);
+        border-radius: 2px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    .comment-card::before {
+        content: '✝';
+        position: absolute;
+        top: 1rem;
+        right: 1.25rem;
+        color: var(--parchment-dk);
+        font-size: 0.9rem;
+    }
+
+    .comment-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 0.5rem;
+    }
+
+    .comment-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--burgundy);
+        color: var(--gold);
+        font-family: 'Cinzel', serif;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .comment-username {
+        font-family: 'Cinzel', serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--burgundy-dk);
+    }
+
+    .comment-date {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-style: italic;
+        margin-left: auto;
+        padding-right: 1.5rem;
+    }
+
+    .comment-body {
+        font-size: 0.92rem;
+        line-height: 1.65;
+        color: var(--charcoal);
+    }
+
+    /* ── COMMENT FORM ── */
+    .comment-form {
+        background: var(--white);
+        border: 1px solid var(--parchment-dk);
+        border-top: 3px solid var(--burgundy);
+        border-radius: 2px;
+        padding: 1.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .comment-form textarea {
+        width: 100%;
+        font-family: 'Lora', serif;
+        font-size: 0.92rem;
+        padding: 10px 14px;
+        border: 1px solid var(--parchment-dk);
+        border-radius: 2px;
+        background: var(--parchment);
+        color: var(--charcoal);
+        resize: vertical;
+        min-height: 90px;
+        margin-bottom: 0.75rem;
+    }
+
+    .comment-form textarea:focus {
+        outline: 2px solid var(--gold);
+        outline-offset: 1px;
+    }
+
+    .login-prompt {
+        background: var(--parchment);
+        border: 1px dashed var(--gold);
+        border-radius: 2px;
+        padding: 1.25rem;
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 0.9rem;
+        margin-top: 1.5rem;
+    }
+
+    .login-prompt a {
+        color: var(--burgundy);
+        font-style: normal;
+        font-family: 'Cinzel', serif;
+        font-size: 0.8rem;
+    }
+
+    .no-comments {
+        text-align: center;
+        color: var(--text-muted);
+        font-style: italic;
+        padding: 2rem;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'home' %}" class="back-link">← Back to Gallery</a>
+
+<div class="work-layout">
+
+    <div class="work-image-wrap">
+        {% if work.image %}
+            <img src="{{ work.image.url }}" alt="{{ work.title }}">
+        {% else %}
+            <div class="work-image-placeholder">✝</div>
+        {% endif %}
+    </div>
+
+    <div class="work-info">
+        <span class="work-category-tag">{{ work.category.name }}</span>
+        <h1 class="work-title">{{ work.title }}</h1>
+        <p class="work-author">by {{ work.author_name }}</p>
+
+        {% if work.description %}
+            <p class="work-description">{{ work.description }}</p>
+        {% endif %}
+
+        <div class="vote-box">
+            <div class="vote-count-wrap">
+                <span class="vote-cross-big">✝</span>
+                <div>
+                    <div class="vote-number">{{ work.vote_count }}</div>
+                    <div class="vote-label">vote{{ work.vote_count|pluralize }} received</div>
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+                {% if user_has_voted %}
+                    <span class="already-voted">✝ You have voted</span>
+                {% else %}
+                    <a href="{% url 'vote' work.pk %}" class="btn btn-gold">Cast Your Vote</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline">Sign in to vote</a>
+            {% endif %}
+        </div>
+
+        <p class="work-meta">Submitted on {{ work.submitted_at|date:"F j, Y" }}</p>
+    </div>
+
+</div>
+
+<div class="cross-divider" style="margin: 2.5rem 0;"><span>✝</span></div>
+
+<div class="comments-section">
+    <h2 class="section-heading">Comments &nbsp; ({{ comments|length }})</h2>
+
+    {% for comment in comments %}
+    <div class="comment-card">
+        <div class="comment-header">
+            <div class="comment-avatar">
+                {{ comment.user.username|slice:":2"|upper }}
+            </div>
+            <span class="comment-username">{{ comment.user.username }}</span>
+            <span class="comment-date">{{ comment.created_at|date:"M j, Y" }}</span>
+        </div>
+        <p class="comment-body">{{ comment.body }}</p>
+    </div>
+    {% empty %}
+        <p class="no-comments">Be the first to leave a comment ✝</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+    <div class="comment-form">
+        <h3 style="font-family:'Cinzel',serif; font-size:0.85rem; letter-spacing:0.08em; color:var(--burgundy-dk); margin-bottom:0.75rem;">Leave a Comment</h3>
+        <form method="POST" action="{% url 'add_comment' work.pk %}">
+            {% csrf_token %}
+            {{ comment_form.body }}
+            <button type="submit" class="btn btn-primary" style="margin-top: 0.75rem;">Submit Comment</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="login-prompt">
+        <a href="{% url 'login' %}">Sign in</a> to leave a comment
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

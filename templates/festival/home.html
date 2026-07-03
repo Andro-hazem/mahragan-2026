@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% block title %}Gallery — Church Festival{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 3rem 1rem 2rem;
+        position: relative;
+    }
+
+    .hero-cross {
+        font-size: 3rem;
+        color: var(--gold);
+        display: block;
+        margin-bottom: 1rem;
+        opacity: 0.85;
+    }
+
+    .hero h1 {
+        font-family: 'Cinzel', serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--burgundy-dk);
+        line-height: 1.15;
+    }
+
+    .hero p {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 1.05rem;
+        margin-top: 0.75rem;
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+        background: var(--white);
+        border: 1px solid var(--parchment-dk);
+        border-left: 4px solid var(--gold);
+        border-radius: 2px;
+        padding: 1rem 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-end;
+        margin-bottom: 2rem;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .filter-group label {
+        font-family: 'Cinzel', serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+    }
+
+    .filter-group select {
+        font-family: 'Lora', serif;
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        border: 1px solid var(--parchment-dk);
+        border-radius: 2px;
+        background: var(--parchment);
+        color: var(--charcoal);
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B1E2E' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
+    }
+
+    .filter-group select:focus {
+        outline: 2px solid var(--gold);
+        outline-offset: 1px;
+    }
+
+    /* ── WORKS GRID ── */
+    .works-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.75rem;
+    }
+
+    .work-card {
+        background: var(--white);
+        border: 1px solid var(--parchment-dk);
+        border-top: 3px solid var(--gold);
+        border-radius: 2px;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .work-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 28px rgba(107, 30, 46, 0.13);
+    }
+
+    .work-card-img {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        display: block;
+        background: var(--parchment-dk);
+    }
+
+    .work-card-img-placeholder {
+        width: 100%;
+        height: 210px;
+        background: var(--parchment-dk);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 2.5rem;
+    }
+
+    .work-card-body {
+        padding: 1rem 1.25rem 1.25rem;
+    }
+
+    .work-card-category {
+        font-family: 'Cinzel', serif;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--burgundy);
+        margin-bottom: 4px;
+    }
+
+    .work-card-title {
+        font-family: 'Cinzel', serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--burgundy-dk);
+        margin-bottom: 2px;
+    }
+
+    .work-card-author {
+        font-style: italic;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.75rem;
+    }
+
+    .work-card-footer {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-top: 1px solid var(--parchment-dk);
+        padding-top: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+    }
+
+    .work-card-votes {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: 'Cinzel', serif;
+    }
+
+    .vote-cross { color: var(--gold); font-size: 0.9rem; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-muted);
+    }
+
+    .empty-state .empty-cross {
+        font-size: 3rem;
+        color: var(--parchment-dk);
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        font-family: 'Cinzel', serif;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+        font-family: 'Cinzel', serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 1.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="hero">
+    <span class="hero-cross">✝</span>
+    <h1>Works and Art</h1>
+
+</div>
+
+<div class="cross-divider"><span>✝</span></div>
+
+<form method="GET" action="{% url 'home' %}">
+    <div class="filters">
+        <div class="filter-group">
+            <label>Category</label>
+            <select name="category" onchange="this.form.submit()">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                    <option value="{{ cat.pk }}" {% if selected_category == cat.pk|stringformat:"s" %}selected{% endif %}>
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Sort By</label>
+            <select name="sort" onchange="this.form.submit()">
+                <option value="newest"     {% if selected_sort == 'newest'     %}selected{% endif %}>Newest First</option>
+                <option value="oldest"     {% if selected_sort == 'oldest'     %}selected{% endif %}>Oldest First</option>
+                <option value="most_voted" {% if selected_sort == 'most_voted' %}selected{% endif %}>Most Voted</option>
+                <option value="least_voted"{% if selected_sort == 'least_voted'%}selected{% endif %}>Least Voted</option>
+            </select>
+        </div>
+    </div>
+</form>
+
+{% if works %}
+    <p class="section-title">{{ works|length }} work{{ works|length|pluralize }} on display</p>
+    <div class="works-grid">
+        {% for work in works %}
+        <a href="{% url 'work_detail' work.pk %}" class="work-card">
+            {% if work.image %}
+                <img class="work-card-img" src="{{ work.image.url }}" alt="{{ work.title }}">
+            {% else %}
+                <div class="work-card-img-placeholder">✝</div>
+            {% endif %}
+            <div class="work-card-body">
+                <p class="work-card-category">{{ work.category.name }}</p>
+                <h3 class="work-card-title">{{ work.title }}</h3>
+                <p class="work-card-author">by {{ work.author_name }}</p>
+                <div class="work-card-footer">
+                    <span class="work-card-votes">
+                        <span class="vote-cross">✝</span>
+                        {{ work.vote_count }} vote{{ work.vote_count|pluralize }}
+                    </span>
+                    <span>{{ work.comments.count }} comment{{ work.comments.count|pluralize }}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <span class="empty-cross">✝</span>
+        <h3>No works found</h3>
+        <p>Try a different category or sort option.</p>
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Church Festival{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --burgundy:    #6B1E2E;
+            --burgundy-dk: #4A1220;
+            --gold:        #C9A84C;
+            --gold-lt:     #E8D08A;
+            --parchment:   #F5F0E8;
+            --parchment-dk:#EDE5D4;
+            --charcoal:    #1A1A1A;
+            --text-muted:  #6B6055;
+            --white:       #FFFFFF;
+        }
+
+        body {
+            font-family: 'Lora', Georgia, serif;
+            background-color: var(--parchment);
+            color: var(--charcoal);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── NAVBAR ── */
+        nav {
+            background-color: var(--burgundy-dk);
+            border-bottom: 3px solid var(--gold);
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-cross {
+            color: var(--gold);
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .nav-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.15rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--parchment);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        .nav-links .btn-nav {
+            background: var(--gold);
+            color: var(--burgundy-dk) !important;
+            padding: 6px 16px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        .nav-links .btn-nav:hover {
+            background: var(--gold-lt);
+            color: var(--burgundy-dk) !important;
+        }
+
+        /* ── CROSS DIVIDER ── */
+        .cross-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .cross-divider::before,
+        .cross-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .cross-divider span {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* ── MESSAGES ── */
+        .messages {
+            max-width: 900px;
+            margin: 1rem auto 0;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        .message {
+            padding: 0.75rem 1.25rem;
+            border-radius: 2px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            border-left: 4px solid;
+        }
+
+        .message.success { background: #f0faf0; border-color: #4caf50; color: #2e7d32; }
+        .message.warning { background: #fff8e1; border-color: var(--gold); color: #7a5c00; }
+        .message.error   { background: #fdf0f0; border-color: #e53935; color: #c62828; }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.5rem;
+        }
+
+        .page-header .eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--burgundy-dk);
+            line-height: 1.2;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            padding: 10px 24px;
+            border-radius: 2px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:active { transform: scale(0.98); }
+
+        .btn-primary {
+            background: var(--burgundy);
+            color: var(--white);
+        }
+
+        .btn-primary:hover { background: var(--burgundy-dk); }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--burgundy-dk);
+            font-weight: 600;
+        }
+
+        .btn-gold:hover { background: var(--gold-lt); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--burgundy);
+            border: 1.5px solid var(--burgundy);
+        }
+
+        .btn-outline:hover { background: var(--burgundy); color: var(--white); }
+
+        /* ── CARDS ── */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--parchment-dk);
+            border-top: 3px solid var(--gold);
+            border-radius: 2px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(107, 30, 46, 0.12);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--burgundy-dk);
+            border-top: 3px solid var(--gold);
+            color: var(--parchment);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.85rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+        }
+
+        footer span { color: var(--gold); }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav>
+    <a href="{% url 'home' %}" class="nav-brand">
+        <span class="nav-cross">✝</span>
+        <span class="nav-title">El Mahragan</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Gallery</a></li>
+        {% if user.is_authenticated %}
+    <li>
+        <form method="POST" action="{% url 'logout' %}" style="margin:0;">
+            {% csrf_token %}
+            <button type="submit" style="background:none; border:none; color: var(--parchment); font-family:'Cinzel', serif; font-size:0.8rem; letter-spacing:0.08em; cursor:pointer; padding:0;">Sign Out</button>
+        </form>
+    </li>
+{% else %}
+            <li><a href="{% url 'login' %}">Sign In</a></li>
+            <li><a href="{% url 'register' %}" class="btn-nav">Register</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+
+    <span>✝</span>
+    <small style="opacity:0.6; font-family: 'Lora', serif; font-style:italic; font-size:0.75rem;">
+        "Whatever you do, do it all for the glory of God." — 1 Corinthians 10:31
+    </small>
+    <span>✝</span>
+</footer>
+
+</body>
+</html>
