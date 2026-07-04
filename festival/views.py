@@ -1,4 +1,4 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -47,6 +47,7 @@ def work_detail(request, pk):
     work = get_object_or_404(Work, pk=pk)
     comments = work.comments.all().order_by('-created_at')
     user_has_voted = False
+    comment_form = CommentForm()
 
     if request.user.is_authenticated:
         user_has_voted = Vote.objects.filter(user=request.user, work=work).exists()
@@ -55,6 +56,7 @@ def work_detail(request, pk):
         'work': work,
         'comments': comments,
         'user_has_voted': user_has_voted,
+        'comment_form': comment_form,
     })
 
 
@@ -96,7 +98,3 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'registration/register.html', {'form': form})
-
-def signout(request):
-    if request.method == 'POST':
-        user = request.user

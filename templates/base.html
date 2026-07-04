@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Church Festival{% endblock %}</title>
+    <title>{% block title %}Festival{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -92,26 +92,6 @@
             color: var(--burgundy-dk) !important;
         }
 
-        /* ── CROSS DIVIDER ── */
-        .cross-divider {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .cross-divider::before,
-        .cross-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--gold), transparent);
-        }
-
-        .cross-divider span {
-            color: var(--gold);
-            font-size: 1.2rem;
-        }
 
         /* ── MESSAGES ── */
         .messages {
@@ -226,19 +206,6 @@
             box-shadow: 0 8px 24px rgba(107, 30, 46, 0.12);
         }
 
-        /* ── FOOTER ── */
-        footer {
-            background: var(--burgundy-dk);
-            border-top: 3px solid var(--gold);
-            color: var(--parchment);
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.85rem;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.05em;
-        }
-
-        footer span { color: var(--gold); }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
@@ -276,15 +243,6 @@
 <main>
     {% block content %}{% endblock %}
 </main>
-
-<footer>
-
-    <span>✝</span>
-    <small style="opacity:0.6; font-family: 'Lora', serif; font-style:italic; font-size:0.75rem;">
-        "Whatever you do, do it all for the glory of God." — 1 Corinthians 10:31
-    </small>
-    <span>✝</span>
-</footer>
 
 </body>
 </html>
